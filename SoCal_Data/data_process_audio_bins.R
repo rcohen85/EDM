@@ -16,9 +16,9 @@ library(readtext)
 
 # Monitoring site and desired start/end dates of master matrix; site name will be used 
 # to label saved files:
-site = "N"
-stdt = "2009-01-14 00:00:00"
-enddt = "2016-11-10"
+site = "E"
+stdt = "2006-09-03 00:00:00"
+enddt = "2009-09-17"
 
 # Desired bin length:
 bn = "3 days"
@@ -212,7 +212,7 @@ load(paste("envdat_",site,".Rdata", sep = ""))
       mfa$dur = mfa$End_UTC - mfa$Start_UTC
       secs_per_bin = aggregate(x=mfa$dur, by=list(bin=mfa$bin), FUN=sum)
       secs_per_bin = merge(sequence, secs_per_bin, by.x = "bin", by.y = "bin", all.x = TRUE)
-      bin_mfa$secs_per_bin = secs_per_bin$x
+      bin_mfa$secs_per_bin = as.numeric(secs_per_bin$x)
       son_prop = as.numeric(bin_mfa$secs_per_bin/(60*60*24*3))
       #colnames(son_prop) = ""
       bin_mfa$son_prop = son_prop
