@@ -3,7 +3,7 @@ setwd("~/Home/School/EDM/class_proj/SoCal_Data")
 library(rEDM)
 library(lubridate)
 # Site & bin length:
-site = "E"
+site = "H"
 bn = "3 days"
 
 # Load master dataframe, make into time series recognizable by later functions:
@@ -20,15 +20,16 @@ load(paste("MasterTS_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,".Rdat
 E_list = c(1:20)
 theta_list = c(0,0.001,0.003,0.01,0.03,0.1,0.3,0.5,1,1.5,2,2.5,3,4,5,6,7,8)
 
+## Change site & bin length in variables below: ##
 for (i in 1:length(ts_matrix[1,])){
-simplex_out_E3day <- simplex(ts_matrix[,i], lib = lib, pred = lib, E = E_list)
-plot(E_list,simplex_out_E3day$rho, type = "l", main = colnames(ts_matrix[i]))
+simplex_out_H3day <- simplex(ts_matrix[,i], lib = lib, pred = lib, E = E_list)
+plot(E_list,simplex_out_H3day$rho, type = "l", main = colnames(ts_matrix[i]))
 }
 
-
+## Change site & bin length in variables below: ##
 for (i in 1:length(ts_matrix[1,])){
-  smap_E3day = s_map(ts_matrix[,i], lib = lib, pred = lib, E = 1, theta = theta_list)
-  plot(smap_E3day$theta, smap_E3day$rho, type = "l",main = colnames(ts_matrix[i]), xlab = "theta", ylab = "rho")
+  smap_H3day = s_map(ts_matrix[,i], lib = lib, pred = lib, E = 1, theta = theta_list)
+  plot(smap_H3day$theta, smap_H3day$rho, type = "l",main = colnames(ts_matrix[i]), xlab = "theta", ylab = "rho")
 }
 
 
@@ -39,6 +40,10 @@ for (i in 3:26){
   c = cor(master$Clicks, master[,i], use = "pairwise.complete.obs")
   corr_mat[i-2,2] = c
 }
+
+save(corr_mat,file = paste("Corr_Mat_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,".Rdata", sep = ""))
+write.csv(corr_mat,file = paste("Corr_Mat_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,".csv", sep = ""))
+
 
 # TS MATRIX FUNCTIONS -----------------------------------------------------
 ## Stitch together longest continuous data chunks
