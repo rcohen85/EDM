@@ -3,8 +3,8 @@ setwd("~/Home/School/EDM/class_proj/SoCal_Data")
 library(rEDM)
 library(lubridate)
 # Site & bin length:
-site = "H"
-bn = "3 days"
+site = "N"
+bn = "2 days"
 
 # Load master dataframe, make into time series recognizable by later functions:
 load(paste("Master_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,".Rdata", sep = ""))
@@ -22,14 +22,14 @@ theta_list = c(0,0.001,0.003,0.01,0.03,0.1,0.3,0.5,1,1.5,2,2.5,3,4,5,6,7,8)
 
 ## Change site & bin length in variables below: ##
 for (i in 1:length(ts_matrix[1,])){
-simplex_out_H3day <- simplex(ts_matrix[,i], lib = lib, pred = lib, E = E_list)
-plot(E_list,simplex_out_H3day$rho, type = "l", main = colnames(ts_matrix[i]))
+simplex_out_N3day <- simplex(ts_matrix[,i], lib = lib, pred = lib, E = E_list)
+plot(E_list,simplex_out_N3day$rho, type = "l", main = colnames(ts_matrix[i]))
 }
 
 ## Change site & bin length in variables below: ##
 for (i in 1:length(ts_matrix[1,])){
-  smap_H3day = s_map(ts_matrix[,i], lib = lib, pred = lib, E = 1, theta = theta_list)
-  plot(smap_H3day$theta, smap_H3day$rho, type = "l",main = colnames(ts_matrix[i]), xlab = "theta", ylab = "rho")
+  smap_N3day = s_map(ts_matrix[,i], lib = lib, pred = lib, E = 1, theta = theta_list)
+  plot(smap_N3day$theta, smap_N3day$rho, type = "l",main = colnames(ts_matrix[i]), xlab = "theta", ylab = "rho")
 }
 
 
@@ -55,10 +55,10 @@ write.csv(corr_mat,file = paste("Corr_Mat_",as.numeric(duration(bn))/(60*60*24),
 # save(ts_matrix,lib,pred,file="3day_master_ts_ld.Rdata")
 # load("3day_master_ts_ld.Rdata")
 
-source("rEDM additional functions/simplex_smap.R")
-simplex_smap_bestE(in_file = paste("MasterTS_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,".Rdata", sep = ""), 
-                   out_file = paste("MasterTS_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,"_simp_smap.Rdata", sep = ""),
-                   Best_E_File = paste("MasterTS_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,"_bestE.csv", sep = ""))
+# source("rEDM additional functions/simplex_smap.R")
+# simplex_smap_bestE(in_file = paste("MasterTS_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,".Rdata", sep = ""), 
+#                    out_file = paste("MasterTS_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,"_simp_smap.Rdata", sep = ""),
+#                    Best_E_File = paste("MasterTS_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,"_bestE.csv", sep = ""))
 
 source("rEDM additional functions/ccm_network.R")
 compute_ccm_web(in_file = paste("MasterTS_",as.numeric(duration(bn))/(60*60*24),"daybin_",site,".Rdata", sep = ""),
